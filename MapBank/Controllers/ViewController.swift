@@ -36,8 +36,6 @@ class ViewController: UIViewController {
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
-        
-        self.view.backgroundColor = .red
     }
     
     private func getData() {
