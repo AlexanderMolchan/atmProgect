@@ -36,6 +36,7 @@ class ViewController: UIViewController {
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
+        print("Git Test")
     }
     
     private func getData() {
