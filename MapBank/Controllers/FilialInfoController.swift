@@ -23,9 +23,9 @@ class FilialInfoController: UIViewController {
         guard let filial else { return }
         adressLabel.text = "\(filial.city), \(filial.address), \(filial.house)"
         if filial.cashIn == "да" {
-            cashInLabel.text = "Возможность предусмотрена"
+            cashInLabel.text = "Возможность предусмотрена:)"
         } else {
-            cashInLabel.text = "Возможность не предусмотрена"
+            cashInLabel.text = "Возможность не предусмотрена:("
         }
     }
 
