@@ -7,6 +7,7 @@ target 'MapBank' do
 
  pod 'Moya'
  pod 'GoogleMaps'
+ pod 'Google-Maps-iOS-Utils'
 
 end
 
