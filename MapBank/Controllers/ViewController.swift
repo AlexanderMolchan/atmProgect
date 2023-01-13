@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleMaps
+import GoogleMapsUtils
 
 class ViewController: UIViewController {
     
@@ -14,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     private var locationManager = CLLocationManager()
+    private var clusterManager: GMUClusterManager?
     private var markers: [GMSMarker] = []
     
     private var data = [AtmInfo]() {
@@ -25,6 +27,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configurateMapView()
+        clusterSettings()
         getData()
     }
     
@@ -36,7 +39,14 @@ class ViewController: UIViewController {
         locationManager.requestAlwaysAuthorization()
         locationManager.delegate = self
         locationManager.startUpdatingLocation()
-        print("Git Test")
+    }
+    
+    private func clusterSettings() {
+        let iconGenerator = GMUDefaultClusterIconGenerator()
+        let algorithm = GMUNonHierarchicalDistanceBasedAlgorithm()
+        let renderer = GMUDefaultClusterRenderer(mapView: mapView, clusterIconGenerator: iconGenerator)
+        clusterManager = GMUClusterManager(map: mapView, algorithm: algorithm, renderer: renderer)
+        clusterManager?.setMapDelegate(self)
     }
     
     private func getData() {
@@ -62,10 +72,13 @@ class ViewController: UIViewController {
             } else {
                 marker.icon = GMSMarker.markerImage(with: UIColor.red)
             }
+            clusterManager?.add(marker)
             marker.map = mapView
             marker.userData = atm
 //            markers.append(marker)
         }
+        mapView.clear()
+        clusterManager?.cluster()
     }
     
 }
@@ -74,7 +87,7 @@ extension ViewController: GMSMapViewDelegate {
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
 //        guard let index = markers.firstIndex(of: marker) else { return true }
 //        let filial = data[index]
-        
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let filialInfoVc = storyboard.instantiateViewController(withIdentifier: String(describing: FilialInfoController.self)) as? FilialInfoController else { return false }
         filialInfoVc.modalPresentationStyle = .pageSheet
@@ -84,6 +97,7 @@ extension ViewController: GMSMapViewDelegate {
         guard let filial = marker.userData as? AtmInfo else { return false }
         filialInfoVc.filial = filial
         
+        mapView.animate(toLocation: marker.position)
         navigationController?.present(filialInfoVc, animated: true)
         return true
     }

@@ -20,6 +20,7 @@ class FilialInfoController: UIViewController {
     }
     
     private func configurateUI() {
+        view.layer.cornerRadius = 30
         guard let filial else { return }
         adressLabel.text = "\(filial.city), \(filial.address), \(filial.house)"
         if filial.cashIn == "да" {
