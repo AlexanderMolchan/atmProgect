@@ -36,5 +36,4 @@ struct AtmInfo: Decodable {
         city = try container.decode(String.self, forKey: .city)
         atmError = try container.decode(String.self, forKey: .atmError)
     }
-    
 }

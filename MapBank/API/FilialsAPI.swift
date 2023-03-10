@@ -37,12 +37,7 @@ extension AtmApi: TargetType {
     }
     
     var parameters: [String : Any]? {
-        var params = [String : Any]()
-        switch self {
-            case .getFilialInfo:
-                return nil 
-        }
-        return params
+        return nil
     }
     
     var encoding: ParameterEncoding {
